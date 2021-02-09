@@ -5,15 +5,17 @@ import Posts from "./components/Posts/Posts";
 import Form from "./components/Form/Form";
 
 import social from "./images/social.png";
+import useStyles from "./styles.js";
 
 const App = () => {
+  const classes = useStyles();
   return (
     <Container maxWidth='lg'>
-      <AppBar position='static' color='inherit'>
-        <Typography variant='h2' align='center'>
+      <AppBar className={classes.appBar} position='static' color='inherit'>
+        <Typography className={classes.heading} variant='h2' align='center'>
           Social
         </Typography>
-        <img src={social} alt='social' height='60' width='60' />
+        <img className={classes.image} src={social} alt='social' height='60' />
       </AppBar>
       <Grow in>
         <Container>
