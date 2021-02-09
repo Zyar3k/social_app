@@ -1,3 +1,5 @@
+const mongoose = require("mongoose");
+
 const Post = require("../models/post.model");
 
 exports.getPosts = async (req, res) => {
@@ -37,6 +39,10 @@ exports.updatePost = async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(_id))
     return res.status(404).send("No post with tah id");
 
-  const updatedPost = await Post.findByIdAndUpdate(_id, post, { new: true });
+  const updatedPost = await Post.findByIdAndUpdate(
+    _id,
+    { ...post, _id },
+    { new: true }
+  );
   res.json(updatedPost);
 };
