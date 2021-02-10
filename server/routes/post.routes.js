@@ -11,4 +11,6 @@ router.route("/:id").patch(PostController.updatePost);
 
 router.route("/:id").delete(PostController.deletePost);
 
+router.route("/:id/likePost").patch(PostController.likePost);
+
 module.exports = router;
