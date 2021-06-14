@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import {
   Avatar,
   Button,
@@ -8,7 +10,10 @@ import {
   Container,
 } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import { GoogleLogin } from "react-google-login";
 import Input from "./Input.js";
+import Icon from "./icon";
+import { AUTH } from "../../constans/actionTypes";
 
 import useStyles from "./styles.js";
 
@@ -16,6 +21,9 @@ const Auth = () => {
   const classes = useStyles();
   const [showPassword, setShowPassword] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
+
+  const dispatch = useDispatch();
+  const history = useHistory();
 
   const handleSubmit = () => {
     console.log("submit");
@@ -32,6 +40,22 @@ const Auth = () => {
     handleShowPassword(false);
   };
 
+  const googleSuccess = async (res) => {
+    const result = res?.profileObj;
+    const token = res?.tokenId;
+
+    try {
+      dispatch({ type: AUTH, data: { result, token } });
+
+      history.push("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const googleError = () =>
+    alert("Google Sign In was unsuccessful. Try again later");
+
   return (
     <Container component='main' maxWidth='xs'>
       <Paper className={classes.paper} elevation={3}>
@@ -40,7 +64,7 @@ const Auth = () => {
         </Avatar>
         <Typography variant='h5'>{isSignup ? "Sign Up" : "Sign In"}</Typography>
         <form className={classes.form} onSubmit={handleSubmit}>
-          <Grid container spacing={12}>
+          <Grid container spacing={2}>
             {isSignup && (
               <>
                 <Input
@@ -48,13 +72,14 @@ const Auth = () => {
                   label='First Name'
                   handleChange={handleChange}
                   autoFocus
-                  half
+                  fullWidth
+                  // half
                 />
                 <Input
-                  name='firstName'
-                  label='First Name'
+                  name='lastName'
+                  label='Last Name'
                   handleChange={handleChange}
-                  half
+                  // half
                 />
               </>
             )}
@@ -62,14 +87,14 @@ const Auth = () => {
               name='email'
               label='Email Address'
               handleChange={handleChange}
-              half
+              // half
               type='email'
             />
             <Input
               name='password'
               label='Password'
               handleChange={handleChange}
-              half
+              // half
               type={showPassword ? "text" : "password"}
               handleShowPassword={handleShowPassword}
             />
@@ -81,16 +106,35 @@ const Auth = () => {
                 type='password'
               />
             )}
+            <Button
+              type='submit'
+              fullWidth
+              variant='contained'
+              color='primary'
+              className={classes.submit}
+            >
+              {isSignup ? "Sign Up" : "Sign In"}
+            </Button>
+            <GoogleLogin
+              clientId='136712633710-hs0nucjhvbfusv0fmp8biddd27a7n6t0.apps.googleusercontent.com'
+              render={(renderProps) => (
+                <Button
+                  className={classes.googleButton}
+                  color='primary'
+                  fullWidth
+                  onClick={renderProps.onClick}
+                  disabled={renderProps.disabled}
+                  startIcon={<Icon />}
+                  variant='contained'
+                >
+                  Google Sign In
+                </Button>
+              )}
+              onSuccess={googleSuccess}
+              onFailure={googleError}
+              cookiePolicy='single_host_origin'
+            />
           </Grid>
-          <Button
-            type='submit'
-            fullWidth
-            variant='contained'
-            color='primary'
-            className={classes.submit}
-          >
-            {isSignup ? "Sign Up" : "Sign In"}
-          </Button>
           <Grid container justify='flex-end'>
             <Grid item>
               <Button onClick={switchMode}>
