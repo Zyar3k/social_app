@@ -1,11 +1,11 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
-const cors = require("cors");
-require("dotenv/config");
+import express from "express";
+import bodyParser from "body-parser";
+import mongoose from "mongoose";
+import cors from "cors";
+import CONNECTION_URL from "./config.js";
 
-const postRoutes = require("./routes/post.routes");
-const userRoutes = require("./routes/user.routes");
+import postRoutes from "./routes/post.routes.js";
+import userRoutes from "./routes/user.routes.js";
 
 const app = express();
 
@@ -20,7 +20,7 @@ app.get("/", (req, res) => {
   res.send("Hello to Social API");
 });
 
-const CONNECTION_URL = process.env.DB_CONNECTION;
+// const CONNECTION_URL = process.env.DB_CONNECTION;
 const PORT = process.env.PORT || 5000;
 
 mongoose

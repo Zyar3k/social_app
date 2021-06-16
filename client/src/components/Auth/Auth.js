@@ -15,6 +15,7 @@ import Input from "./Input.js";
 import Icon from "./icon";
 import { AUTH } from "../../constans/actionTypes";
 import { signup, signin } from "../../actions/auth";
+import { googleClient } from "../../config";
 
 import useStyles from "./styles.js";
 
@@ -33,6 +34,8 @@ const Auth = () => {
   const [formData, setFormData] = useState(initialState);
   const dispatch = useDispatch();
   const history = useHistory();
+
+  console.log(googleClient);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -133,7 +136,7 @@ const Auth = () => {
               {isSignup ? "Sign Up" : "Sign In"}
             </Button>
             <GoogleLogin
-              clientId='136712633710-hs0nucjhvbfusv0fmp8biddd27a7n6t0.apps.googleusercontent.com'
+              clientId={googleClient}
               render={(renderProps) => (
                 <Button
                   className={classes.googleButton}

@@ -1,8 +1,10 @@
-const mongoose = require("mongoose");
+import express from "express";
+import mongoose from "mongoose";
+const router = express.Router();
 
-const Post = require("../models/post.model");
+import Post from "../models/post.model.js";
 
-exports.getPosts = async (req, res) => {
+export const getPosts = async (req, res) => {
   try {
     const postMessages = await Post.find();
 
@@ -12,7 +14,7 @@ exports.getPosts = async (req, res) => {
   }
 };
 
-exports.createPost = async (req, res) => {
+export const createPost = async (req, res) => {
   const { title, message, selectedFile, creator, tags } = req.body;
 
   const newPostMessage = new Post({
@@ -33,7 +35,7 @@ exports.createPost = async (req, res) => {
   }
 };
 
-exports.updatePost = async (req, res) => {
+export const updatePost = async (req, res) => {
   const { id: _id } = req.params;
   const post = req.body;
   if (!mongoose.Types.ObjectId.isValid(_id))
@@ -46,7 +48,7 @@ exports.updatePost = async (req, res) => {
   res.json(updatedPost);
 };
 
-exports.deletePost = async (req, res) => {
+export const deletePost = async (req, res) => {
   const { id } = req.params;
   if (!mongoose.Types.ObjectId.isValid(id))
     return res.status(404).send("No post with tah id");
@@ -54,7 +56,7 @@ exports.deletePost = async (req, res) => {
   res.json({ message: "Post deleted uccessfully" });
 };
 
-exports.likePost = async (req, res) => {
+export const likePost = async (req, res) => {
   const { id } = req.params;
 
   if (!req.userId) return res.json({ message: "Unauthenticated" });
@@ -76,3 +78,5 @@ exports.likePost = async (req, res) => {
 
   res.json(updatedPost);
 };
+
+export default router;

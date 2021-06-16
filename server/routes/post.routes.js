@@ -1,17 +1,23 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
 
-const PostController = require("../controllers/post.controller.js");
-const auth = require("../middleware/auth.js");
+import {
+  getPosts,
+  createPost,
+  updatePost,
+  likePost,
+  deletePost,
+} from "../controllers/post.controller.js";
+import auth from "../middleware/auth.js";
 
-router.route("/").get(PostController.getPosts);
+router.get("/", getPosts);
 
-router.route("/").post(auth, PostController.createPost);
+router.post("/", auth, createPost);
 
-router.route("/:id").patch(auth, PostController.updatePost);
+router.patch("/:id", auth, updatePost);
 
-router.route("/:id").delete(auth, PostController.deletePost);
+router.delete("/:id", auth, deletePost);
 
-router.route("/:id/likePost").patch(auth, PostController.likePost);
+router.patch("/:id/likePost", auth, likePost);
 
-module.exports = router;
+export default router;
