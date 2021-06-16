@@ -35,8 +35,6 @@ const Auth = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  console.log(googleClient);
-
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isSignup) {
